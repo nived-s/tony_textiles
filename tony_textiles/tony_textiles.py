@@ -1,6 +1,6 @@
 import mysql.connector
-
 from datetime import date
+import tables
 
 # establishing database connectivity
 con = mysql.connector.connect(
@@ -17,9 +17,9 @@ try:
 except mysql.connector.errors.ProgrammingError:
     crs.execute('CREATE DATABASE tony_textile_db;')
     crs.execute('USE tony_textile_db;')
+    tables.main()
     con.commit()
 
-### skipped; table creation
 
 #getting logined username
 
@@ -29,7 +29,7 @@ loginedUser= "user1"
 
 ## Functions
 def display_products_table():
-    cmd= "SELECT * FROM products"
+    cmd = "SELECT * FROM products"
     crs.execute(cmd)
     print("\t\t\t----Available products---")
     print("\t", "-"*55)
@@ -41,7 +41,7 @@ def display_products_table():
     #askingToQuit= input("\nPress any key to continue; ")
 
 def display_customers_table():
-    cmd= "SELECT cname, mail, uname FROM customers"
+    cmd = "SELECT cname, mail, uname FROM customers"
     crs.execute(cmd)
     print("\t\t\t----Customers Table---")
     print("\t", "-"*55)
@@ -124,11 +124,11 @@ def add_dress():
     while True:
         # input all data
         print(" ")
-        dressCode= int(input("Enter dress code: "))      
-        itemName= input("Enter item name: ")
-        colour= input("Enter colour of dress: ")
-        size= input("Enter size of dress: ")
-        price= int(input("Enter price of dress: "))
+        dressCode = int(input("Enter dress code: "))      
+        itemName = input("Enter item name: ")
+        colour = input("Enter colour of dress: ")
+        size = input("Enter size of dress: ")
+        price = int(input("Enter price of dress: "))
 
         # entering data to db
         crs.execute(f"insert into products values('{dressCode}', '{itemName}', '{colour}', '{size}', '{price}')")
@@ -136,8 +136,8 @@ def add_dress():
         print("\nData added successfully...")
         
         # continue adding/ back to main menu
-        ch= input("\nAdd more data: (y/n) ? ....  ")
-        if ch.lower()=="n":
+        ch = input("\nAdd more data (y/n):  ")
+        if ch.lower() == "n":
             break
         else:
             continue
@@ -167,17 +167,17 @@ def view_tables():
     print("view\t1) Customers table\t2) Products table\t3)Purchases table\n")
     choice= int(input("Enter choice: "))
 
-    if choice==1:
+    if choice == 1:
         display_customers_table()
         ## going back to main_menu
         print("\n", "*"*80)
         main_menu()
-    elif choice==2:
+    elif choice == 2:
         display_products_table()
         ## going back to main_menu
         print("\n", "*"*80)
         main_menu()
-    elif choice==3:
+    elif choice == 3:
         display_purchases_table()
         ## going back to main_menu
         print("\n", "*"*80)
@@ -192,25 +192,28 @@ def leave_shop():
 
 def main_menu():                                        # first control flow......(1)
     print("""
-    \t  MAIN MENU ;
-    CUSTOMER SERVICES;
+    \t  MAIN MENU 
+    --------------------
+      CUSTOMER SERVICES
+
     \t1) Buy Dress
     \t2) View Purchases
-    
-    ADMIN USE;
+    --------------------
+          ADMIN USE
+          
     \t3) Add dress
     \t4) Modify price
     \t5) View tables
-
+    --------------------
     \t6) Quit
     """)
 
     ### skipped; admin authentication for 'admin use' in main menu
     #adminPasswd= "Thisisadmin123"
     while True:
-        choice= int(input("Enter choice: "))
+        choice = int(input("Enter choice: "))
 
-        if choice== 1:
+        if choice == 1:
             buy_dress()
             break
         
@@ -235,7 +238,7 @@ def main_menu():                                        # first control flow....
             break
 
         else:
-            print("Invalid input-------")
+            print("Invalid input.")
 
-if __name__=="__main__":                        # initialising program
+if __name__ == "__main__":                        # initialising program
     main_menu()
